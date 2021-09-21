@@ -51,7 +51,7 @@ message_bot()
         do
             for token in $(cat $room_ids)
             do
-                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | grep "photo_" | tail -1 | cut -d\" -f4)
+                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | jq '.sizes' | grep "url" | tail -1 |  cut -d\" -f4)
                 curl -X POST \
                 -H "Authorization: Bearer $token" \
                 -F $'message=" "' \
@@ -71,7 +71,7 @@ message_bot()
 }
 
 
-curl -sG "https://api.vk.com/method/wall.get?domain=$vkpage&extended=1&count=$count&v=5.52&access_token=$access_token" > latest_$vkpage.txt
+curl -sG "https://api.vk.com/method/wall.get?domain=$vkpage&extended=1&count=$count&v=5.131&access_token=$access_token" > latest_$vkpage.txt
 
 latest_posts="latest_$vkpage.txt"
 old_posts="oldposts_$vkpage.txt"
