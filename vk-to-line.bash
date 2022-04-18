@@ -1,6 +1,6 @@
 vkpage="$1"
 count="$2"
-room_ids="tom/room_ids.txt"
+room_ids="$3" #currently referencing a plain text file containing ids
 
 file="oldposts_$vkpage.txt"
 if [ -e "$file" ]; then
@@ -51,7 +51,7 @@ message_bot()
         do
             for token in $(cat $room_ids)
             do
-                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | jq '.sizes' | grep "url" | tail -1 |  cut -d\" -f4)
+                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | jq '.sizes[]' | jq -sc 'sort_by(.height)[]' | tail -1 |  cut -d\" -f6)
                 curl -X POST \
                 -H "Authorization: Bearer $token" \
                 -F $'message=" "' \
