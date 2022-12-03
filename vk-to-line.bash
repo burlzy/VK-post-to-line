@@ -51,7 +51,7 @@ message_bot()
         do
             for token in $(cat $room_ids)
             do
-                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | jq '.sizes[]' | jq -sc 'sort_by(.height)[]' | tail -1 |  cut -d\" -f6)
+                image=$(jq '.response.items[]?.attachments[]?.photo | select(.id=='$j')' $latest_posts | jq '.sizes[]' | jq -sc 'sort_by(.height)[]' | tail -1 |  cut -d\" -f12)
                 curl -X POST \
                 -H "Authorization: Bearer $token" \
                 -F $'message=" "' \
